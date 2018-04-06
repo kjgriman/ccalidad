@@ -1,0 +1,39 @@
+.min-footer {
+    border-top: 1px solid #afafaf;
+    display: table;
+    width: 100%;
+    padding: 11px 0;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.logo-top {
+    background: #fff;
+    padding: 6px;
+}
+
+.login-box-body, .register-box-body {
+    background: #fff;
+    padding: 20px;
+    border-top: 0;
+    color: #666;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-page, .register-page {
+    background: #f3f3f3!important;
+}
+
+div#example1_filter {
+    float: right!important;
+}
+label {
+font-size: 12px!important;
+}
+
+.input-group {
+    width: 100%;
+}
+form.sidebar-form.pad {
+    padding: 20px;
+}
