@@ -289,6 +289,25 @@ public function getAllItems($categoria)
        }
    }
    
+   public function querycategory($value)
+   {
+     $valor="";
+       try
+       {
+          $stmt = $this->db->prepare("SELECT DISTINCT tbl_resultado.id_categoria, tbl_categoria.nombre FROM tbl_resultado INNER JOIN tbl_categoria ON tbl_resultado.id_categoria = tbl_categoria.id  WHERE id_ficha=".$value." ");
+
+         
+          $stmt->execute();
+          $result = $stmt->fetchAll();
+                        
+          // var_dump($result);     
+          return $result;
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }
+   }
     public function searchResultadosFicha($idFicha)
     {  $valor="";
        try
@@ -296,7 +315,6 @@ public function getAllItems($categoria)
           $stmt = $this->db->prepare("SELECT * FROM tbl_resultado WHERE id_ficha=".$idFicha." ORDER BY id ASC");
           
           $stmt->execute(array(':idficha'=>$idFicha));
-          $stmt->fetch(PDO::FETCH_ASSOC);
           $result = $stmt->fetchAll();
           foreach($result as $row){
                 $valor.=$row['valor'].",";

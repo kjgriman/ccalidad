@@ -260,7 +260,7 @@ input#reservation {
                         	
                         	$result1 = $ficha->searchByLocal1($idLocal,$fecha11,$fecha2,$inspector);
 // print_r($result1);
-                        	$nro=1;
+                        	$nro=0;
                         	//echo  "Total". $stmt->rowCount() ."<br>";
                         	 
                         	    
@@ -275,7 +275,9 @@ input#reservation {
                                     foreach($result1 as $row){
                                       
                         	           
-                        	            $resultado = $ficha->searchResultadosFicha($row['0']);
+                                      $resultado = $ficha->searchResultadosFicha($row[0]);
+                        	            $resultado2 = $ficha->querycategory($row[0]);
+                                      // print_r($resultado2);
                                       if($resultado != null){
 
                                       $resultadojson= json_encode($resultado, JSON_FORCE_OBJECT);
@@ -284,11 +286,17 @@ input#reservation {
                                         $resultadojson  = '';
                                       }
                                       // print_r($resultado);
-                                      
+                                       if($resultado2 != null){
+
+                                      $resultadojson2= json_encode($resultado2, JSON_FORCE_OBJECT);
+                                      }
+                                      else {
+                                        $resultadojson2  = '';
+                                      }
                                       ?>
                                        
                                       <tr>
-                                        <td><input type="text" name="data_<?php echo $nro;?>" id="data_<?php echo $nro;?>" value='<?php print_r ($resultadojson); ?>'><?php echo $nro; ?></td>
+                                        <td><input type="text" name="data_<?php echo $nro;?>" id="data_<?php echo $nro;?>" value='<?php print_r ($resultadojson); ?>'> <input type="text" name="resultado2_<?php echo $nro;?>" id="resultado2_<?php echo $nro;?>" value='<?php print_r ($resultadojson2); ?>'><?php echo $nro; ?></td>
                                         <td><?php echo $row['fecha_inspeccion'] ?></td>
                                         <td><?php echo $row['tienda'] ?></td>
                                         <td><?php echo $row['user_name'] ?></td>
@@ -386,7 +394,7 @@ input#reservation {
 
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo_<?php echo $key?>">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#codllapseTwo_<?php echo $key?>">
   							               <i class="fa fa-check-square-o" aria-hidden="true"></i><?php echo ucfirst($value['nombre'])?> 
                                <span class="label label-danger">2</span>
                             </a>
@@ -394,7 +402,7 @@ input#reservation {
                     </div>
 
 
-                    <div id="collapseTwo_<?php echo $key?>" class="panel-collapse collapse">
+                    <div id="codllapseTwo_<?php echo $key?>" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="row">
                           <?php
@@ -509,12 +517,18 @@ $('#tienda').val(tienda + ' - ' + pasillo);
 $('#usuario').val(usuario);
 $('#observaciones').val(observaciones);
 var dataResult = $('#data_'+nro).val();
+var dataResult2 = $('#resultado2_'+nro).val();
 // var dataResult = $('#data_'+nro).val();
 // alert(dataResult);
 // var test= JSON.stringify(dataResult, ['valor']);
 var obj = JSON.parse(dataResult);
+var obj2 = JSON.parse(dataResult2);
 console.log(obj);
-
+console.log(obj2[0].nombre);
+Object.keys(obj2).forEach(function (key) {
+    console.log(key, obj2[key].nombre)
+    $('.modal-body').append('<div class="panel panel-default"><div class="panel-heading">                        <h4 class="panel-title">                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo_'+key+'"> <i class="fa fa-check-square-o" aria-hidden="true">'+obj2[key].nombre +'</i><span class="label label-danger">2</span>                            </a>                        </h4>                    </div>                    <div id="collapseTwo_'+key+'" class="panel-collapse collapse">                        <div class="panel-body">                            <div class="row">                                              <div class="col-md-4">                                   <div class="form-group">                                      <label></label>                                      <label>                                        <input type="text" id="arreglo" value="No"  disabled>                                      </label>                                   </div>                               </div>                             </div>                        </div>                    </div>                </div>');
+});
 
 
 }
