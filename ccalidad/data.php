@@ -285,7 +285,7 @@ input#reservation {
                                       else {
                                         $resultadojson  = '';
                                       }
-                                      // print_r($resultado);
+                                      // print_r($resultadojson);
                                        if($resultado2 != null){
 
                                       $resultadojson2= json_encode($resultado2, JSON_FORCE_OBJECT);
@@ -390,44 +390,41 @@ input#reservation {
                                
                               
                             ?>
-                <div class="panel panel-default">
+                  <!-- <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#codllapseTwo_<?php echo $key?>">
+    							               <i class="fa fa-check-square-o" aria-hidden="true"></i><?php echo ucfirst($value['nombre'])?> 
+                                 <span class="label label-danger">2</span>
+                              </a>
+                          </h4>
+                      </div>
+                      <div id="codllapseTwo_<?php echo $key?>" class="panel-collapse collapse">
+                          <div class="panel-body">
+                              <div class="row">
+                            <?php
+                          $idCat = $value['id'];
+                          $resu = $ficha->getAllItems($idCat);
+                              foreach($resu as $row2){
+                               
+                            ?>
 
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#codllapseTwo_<?php echo $key?>">
-  							               <i class="fa fa-check-square-o" aria-hidden="true"></i><?php echo ucfirst($value['nombre'])?> 
-                               <span class="label label-danger">2</span>
-                            </a>
-                        </h4>
-                    </div>
-
-
-                    <div id="codllapseTwo_<?php echo $key?>" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                          <?php
-                        $idCat = $value['id'];
-                        $resu = $ficha->getAllItems($idCat);
-                            foreach($resu as $row2){
-                             
-                          ?>
-
-                                <div class="col-md-4">
-                                   <div class="form-group">
-                  										<label><?php echo $row2['nombre']?></label>
-                  										<label>
-                  											<input type="text" id="arreglo" value="No"  disabled>
-                  										</label>
-									                 </div>
-                                </div>
-              								  
-								              <?php 
-                                }
-                              ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                  <div class="col-md-4">
+                                     <div class="form-group">
+                    										<label><?php echo $row2['nombre']?></label>
+                    										<label>
+                    											<input type="text" id="arreglo" value="No"  disabled>
+                    										</label>
+  									                 </div>
+                                  </div>
+                								  
+  								              <?php 
+                                  }
+                                ?>
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
                               <?php 
                                   }
                               ?>
@@ -510,7 +507,8 @@ input#reservation {
 <!-- page script -->
 <script>
 
-function showmodaldetail(nro,fecha, tienda, usuario, pasillo, observaciones, resul){
+function showmodaldetail(nro,fecha, tienda, usuario, pasillo, observaciones, ficha){
+  $('.modal-body .panel-group').html('')
 $('#addBookDialog').modal();
 $('#fecha').val(fecha);
 $('#tienda').val(tienda + ' - ' + pasillo);
@@ -521,14 +519,36 @@ var dataResult2 = $('#resultado2_'+nro).val();
 // var dataResult = $('#data_'+nro).val();
 // alert(dataResult);
 // var test= JSON.stringify(dataResult, ['valor']);
+if (dataResult != '') {
+
 var obj = JSON.parse(dataResult);
-var obj2 = JSON.parse(dataResult2);
-console.log(obj);
-console.log(obj2[0].nombre);
-Object.keys(obj2).forEach(function (key) {
-    console.log(key, obj2[key].nombre)
-    $('.modal-body').append('<div class="panel panel-default"><div class="panel-heading">                        <h4 class="panel-title">                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo_'+key+'"> <i class="fa fa-check-square-o" aria-hidden="true">'+obj2[key].nombre +'</i><span class="label label-danger">2</span>                            </a>                        </h4>                    </div>                    <div id="collapseTwo_'+key+'" class="panel-collapse collapse">                        <div class="panel-body">                            <div class="row">                                              <div class="col-md-4">                                   <div class="form-group">                                      <label></label>                                      <label>                                        <input type="text" id="arreglo" value="No"  disabled>                                      </label>                                   </div>                               </div>                             </div>                        </div>                    </div>                </div>');
+Object.keys(obj).forEach(function(key){
+  if (obj[key].id_ficha == 70) {
+    console.log(obj[key])
+  }
+  // console.log(obj[key])
+$('.modal-body .panel-body').append('<div class="col-md-4">  <div class="form-group"> <label>aaaaaa</label>   <label>    <input type="text" id="arreglo" value="No"  disabled>  </label>     </div>  </div>  ');
 });
+}
+else{obj = ''}
+if (dataResult2 != '') {
+
+var obj2 = JSON.parse(dataResult2);
+Object.keys(obj2).forEach(function (key) {
+    // console.log(key, obj2[key])
+    // console.log(key, obj[key])
+    $('.modal-body .panel-group').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#codllapseTwo_'+key+'"><i class="fa fa-check-square-o" aria-hidden="true"></i>'+ obj2[key].nombre+' <span class="label label-danger">2</span></a></h4> </div> <div id="codllapseTwo_'+key+'" class="panel-collapse collapse">  <div class="panel-body"> <div class="row">       </div>    </div>   </div> </div>');
+
+
+    
+});
+}
+else{ obj2 = ''}
+console.log(ficha)
+console.log(obj);
+// console.log(obj2[0].nombre);
+
+
 
 
 }
