@@ -277,7 +277,9 @@ input#reservation {
                         	           
                                       $resultado = $ficha->searchResultadosFicha($row[0]);
                         	            $resultado2 = $ficha->querycategory($row[0]);
-                                      // print_r($resultado2);
+                                      echo "<pre>";
+                                      print_r($resultado);
+                                     
                                       if($resultado != null){
 
                                       $resultadojson= json_encode($resultado, JSON_FORCE_OBJECT);
@@ -285,7 +287,6 @@ input#reservation {
                                       else {
                                         $resultadojson  = '';
                                       }
-                                      // print_r($resultadojson);
                                        if($resultado2 != null){
 
                                       $resultadojson2= json_encode($resultado2, JSON_FORCE_OBJECT);
@@ -293,6 +294,7 @@ input#reservation {
                                       else {
                                         $resultadojson2  = '';
                                       }
+                                      // print_r($resultadojson2);
                                       ?>
                                        
                                       <tr>
@@ -525,9 +527,9 @@ var obj = JSON.parse(dataResult);
 Object.keys(obj).forEach(function(key){
   if (obj[key].id_ficha == 70) {
     console.log(obj[key])
-  }
+   }
   // console.log(obj[key])
-$('.modal-body .panel-body').append('<div class="col-md-4">  <div class="form-group"> <label>aaaaaa</label>   <label>    <input type="text" id="arreglo" value="No"  disabled>  </label>     </div>  </div>  ');
+
 });
 }
 else{obj = ''}
@@ -537,9 +539,10 @@ var obj2 = JSON.parse(dataResult2);
 Object.keys(obj2).forEach(function (key) {
     // console.log(key, obj2[key])
     // console.log(key, obj[key])
-    $('.modal-body .panel-group').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#codllapseTwo_'+key+'"><i class="fa fa-check-square-o" aria-hidden="true"></i>'+ obj2[key].nombre+' <span class="label label-danger">2</span></a></h4> </div> <div id="codllapseTwo_'+key+'" class="panel-collapse collapse">  <div class="panel-body"> <div class="row">       </div>    </div>   </div> </div>');
+    $('.modal-body .panel-group').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo_'+key+'"><i class="fa fa-check-square-o" aria-hidden="true"></i>aaaaa'+ obj2[key].nombre+' <span class="label label-danger">2</span></a></h4> </div> <div id="collapseTwo_'+key+'" class="panel-collapse collapse">  <div class="panel-body"> <div class="row">       </div>    </div>   </div> </div>');
 
-
+ $('.modal-body .panel-body').append('<div class="col-md-4">  <div class="form-group"> <label>aaaaaa</label>   <label>    <input type="text" id="arreglo" value="No"  disabled>  </label>     </div>  </div>  ');
+  
     
 });
 }

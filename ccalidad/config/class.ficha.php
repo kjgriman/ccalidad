@@ -288,7 +288,26 @@ public function getAllItems($categoria)
            echo $e->getMessage();
        }
    }
-   
+   public function historicbylocal()
+   {
+     try
+       {
+ $stmt = $this->db->prepare("SELECT DISTINCT id_tienda , tbl_tiendas.tienda, tbl_tiendas.pasillo FROM tbl_ficha INNER JOIN tbl_tiendas ON tbl_tiendas.id = tbl_ficha.id_tienda" );
+
+         
+          $stmt->execute();
+          $result = $stmt->fetchAll();
+                        
+          // var_dump($result);   
+          // die();  
+          return $result;
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }
+   }
+
    public function querycategory($value)
    {
      $valor="";

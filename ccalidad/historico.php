@@ -157,54 +157,27 @@ input#reservation {
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
                   <tbody>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Melo Pet & Garden | Dinosaurio</a></td>
+                    <?php
+                    $result= $ficha->historicbylocal();
+                    // print_r($result);
+                    foreach ($result as $key => $value) {
+                      // print_r($value['tienda']);
+                      ?>
+                    <tr>
+                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php"><?php print_r($value['tienda']);?> | <?php print_r($value['pasillo']);?></a></td>
                     <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">KR Shoes | Cebra</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Salvador Sala de Belleza | Cebra</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Ms Boutique | Le&oacute;n</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Samantha | Le&oacute;n</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Joyeria Venecia | Rinoceronte</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">Moose | Rinoceronte</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                  </tr>
-                  <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php">U.S Polo Assciation | Rinoceronte</a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                  </tr>
+                    </tr>
+
+                      <?php
+                    }
+                    ?>
+
+                  
+                  
+                  
+                  
                   
                   </tbody>
                 </table>
