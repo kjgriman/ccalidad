@@ -42,7 +42,7 @@
           <ul class="treeview-menu">
               <li><a href="ficha.php"><i class="fa fa-circle-o"></i> Inspecci&oacute;n</a></li>
             <li><a href="registertienda.php"><i class="fa fa-circle-o"></i> Tienda</a></li>
-             <li><a href="#"><i class="fa fa-circle-o"></i> Focos</a></li>
+             
              <li><a href="registercategory.php"><i class="fa fa-circle-o"></i> Categoria</a></li>
              <li><a href="registeritems.php"><i class="fa fa-circle-o"></i> Items</a></li>
             <li><a href="reg_user.php"><i class="fa fa-circle-o"></i> Usuario</a></li>

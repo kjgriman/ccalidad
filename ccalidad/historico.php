@@ -161,10 +161,10 @@ input#reservation {
                     $result= $ficha->historicbylocal();
                     // print_r($result);
                     foreach ($result as $key => $value) {
-                      // print_r($value['tienda']);
+                      print_r($value);
                       ?>
                     <tr>
-                    <td class="mailbox-name"><a href="http://www.albrookmall.com/ccalidad/reporte.php"><?php print_r($value['tienda']);?> | <?php print_r($value['pasillo']);?></a></td>
+                    <td class="mailbox-name"><a href="" onclick="showmodal()"><?php print_r($value['tienda']);?> | <?php print_r($value['pasillo']);?></a></td>
                     <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
                     </td>
                     <td class="mailbox-attachment"></td>

@@ -127,7 +127,9 @@ include_once 'header.php';
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3><?php
+              $result2 = $ficha->getAllTiendaPasillo();
+               print_r(count($result2))?></h3>
 
               <p>Tiendas registradas</p>
             </div>
