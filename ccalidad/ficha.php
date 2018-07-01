@@ -239,7 +239,9 @@ label {
             <!-- /.box-header -->
             <!-- form start -->
 			<div class="row">
-            <form role="form" method="post" enctype="multipart/form-data">
+        
+            <form role="form" method="post" enctype="multipart/form-data" action="ficha.php">
+
               <div class="box-body">
                    <div class="col-md-6">
                 <div class="form-group">
@@ -346,14 +348,17 @@ label {
                        
                           <div class="col-lg-6 col-sm-6 col-12">
                     <label>Subida de fotos</label>
-            <div class="input-group">
-                <label class="input-group-btn">
-                    <span class="btn btn-primary">
-                        Subir Fotos <input type="file" id="file" style="display: none;" name="files[]" multiple="multiple" accept="image/*" required="required" >
-                    </span>
-                </label>
-                <input type="text" class="form-control" readonly>
-            </div>
+           <input hidden id="file" name="file"/>
+
+    <!-- You can add extra form fields here -->
+
+    <div class="dropzone dropzone-file-area" id="fileUpload">
+        <div class="dz-default dz-message">
+            <h3 class="sbold">Arraste las imagenes aqui para subirlas</h3>
+            <span>Tambien puede dar click para abrir el explorador de archivos</span>
+        </div>
+    </div>
+
             <span class="help-block">
                 Intenta subir una o mas fotos para esta inspecci&oacute;n
             </span>
@@ -466,6 +471,26 @@ label {
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
 <script>
+
+  Dropzone.options.fileUpload = {
+    url: 'ficha.php',
+    addRemoveLinks: true,
+    uploadMultiple: true,
+    maxFilesize: 5,
+    autoProcessQueue: false,
+    accept: function(file) {
+        let fileReader = new FileReader();
+
+        fileReader.readAsDataURL(file);
+        fileReader.onloadend = function() {
+
+            let content = fileReader.result;
+            $('#file').val(content);
+            file.previewElement.classList.add("dz-success");
+        }
+        file.previewElement.classList.add("dz-complete");
+    }
+}
   $(function () {
     //Initialize Select2 Elements
     $(".select2").select2();

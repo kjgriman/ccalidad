@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="dist/css/dropzone.min.css">
+<script src="dist/js/dropzone.js"></script>
+
 <?php
 include_once 'config/database.php';
 
