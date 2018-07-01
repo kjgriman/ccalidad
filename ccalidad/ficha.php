@@ -478,6 +478,7 @@ label {
     uploadMultiple: true,
     maxFilesize: 5,
     autoProcessQueue: false,
+    dictRemoveFile: "<div style='background: red;color: white;width: 80%;left: 10%;position: absolute;top: 104%; border-radius: 10%;'><i class='fa fa-trash-o' aria-hidden='true'>  </i> Eliminar</div>",
     accept: function(file) {
         let fileReader = new FileReader();
 
