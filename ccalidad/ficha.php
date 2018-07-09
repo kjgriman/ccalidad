@@ -13,6 +13,7 @@ $count = 0;
 
 if(isset($_POST['btn-aceptar']))
 {
+ 
     $idLocal = $_POST['txt_idlocal'];
     $fecha = $_POST['txt_fecha'];
     $obs = $_POST['obsv'];
@@ -41,10 +42,18 @@ if(isset($_POST['btn-aceptar']))
    
    //Guardamos las observaciones de cada categoria
   
+  
    for($j=1;$j<=$totalCategoria1;$j++){
 		$valor = $_POST['obsv'.$j];
-		$fichaobservacion->addFichaObservacion($nro,$j,$valor);
+    $categoria = $_POST['categoria_'.$j];
+    // var_dump($nro);
+    // var_dump($categoria);
+    // var_dump($valor);
+    /*var_dump($j);
+    var_dump($valor);*/
+		$fichaobservacion->addFichaObservacion($nro,$categoria,$valor);
    }
+   
    
    
    // Loop $_FILES to exeicute all files
@@ -72,7 +81,7 @@ if(isset($_POST['btn-aceptar']))
    
    
    $msje="Registro guardado satisfactoriamente";
-   header('Location: ficha.php');
+  // header('Location: ficha.php');
 }
 ?>
 
@@ -313,10 +322,10 @@ label {
 									echo "<label>". utf8_decode($nombreItem) ."&nbsp;&nbsp;</label>";
                   echo "<label>";
 									echo "<input type='hidden' value='".$row2['id_categoria']."' id='categoria_".$totalItem."' name='categoria_".$totalItem."'>";
-									echo "<input type='radio' name='item".$idItem."' id='item".$idItem."' value='1' class='flat-red' required='required'>Si&nbsp;&nbsp;";
+									echo "<input type='radio' name='item".$totalItem."' id='item".$idItem."' value='1' class='flat-red' required='required'>Si&nbsp;&nbsp;";
 									echo "</label>";
 									echo "<label>";
-									echo "<input type='radio' name='item".$idItem."' id='item".$idItem."' value='0' class='flat-red'>No";
+									echo "<input type='radio' name='item".$totalItem."' id='item".$idItem."' value='0' class='flat-red'>No";
 									echo "</label>";
 									echo "</div>";
 									echo "</div>";
@@ -327,7 +336,7 @@ label {
 							echo "<div class='col-md-12'>";
 							echo "<div class='form-group'>";
 							echo "<label>Observaciones</label>";
-							echo "<textarea class='form-control' required='required' rows='2' name='obsv".$idCat."' placeholder='Observaciones ...'></textarea>";
+							echo "<textarea class='form-control' required='required' rows='2' name='obsv".$totalItem."' placeholder='Observaciones ...'></textarea>";
 							echo "</div>";
 							echo "</div>";
 							echo "</div>";
@@ -351,13 +360,14 @@ label {
            <input hidden id="file" name="file"/>
 
     <!-- You can add extra form fields here -->
+    <input type="file" multiple="multiple" name="files[]" class="btn btn-primary">
 
-    <div class="dropzone dropzone-file-area" id="fileUpload">
+    <!-- <div class="dropzone dropzone-file-area" id="fileUpload">
         <div class="dz-default dz-message">
             <h3 class="sbold">Arraste las imagenes aqui para subirlas</h3>
             <span>Tambien puede dar click para abrir el explorador de archivos</span>
         </div>
-    </div>
+    </div> -->
 
             <span class="help-block">
                 Intenta subir una o mas fotos para esta inspecci&oacute;n
@@ -478,6 +488,9 @@ label {
     uploadMultiple: true,
     maxFilesize: 5,
     autoProcessQueue: false,
+    maxFiles: 5,
+    acceptedFiles: "image/*",
+    dictInvalidFileType:"Archivo no permitido",
     dictRemoveFile: "<div style='background: red;color: white;width: 80%;left: 10%;position: absolute;top: 104%; border-radius: 10%;'><i class='fa fa-trash-o' aria-hidden='true'>  </i> Eliminar</div>",
     accept: function(file) {
         let fileReader = new FileReader();
