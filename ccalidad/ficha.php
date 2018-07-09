@@ -13,11 +13,12 @@ $count = 0;
 
 if(isset($_POST['btn-aceptar']))
 {
- 
+//  var_dump($_POST);
+//  die();
     $idLocal = $_POST['txt_idlocal'];
     $fecha = $_POST['txt_fecha'];
     $obs = $_POST['obsv'];
-	$plazo = $_POST['txt_plazo'];
+	  $plazo = $_POST['txt_plazo'];
 	
     $idusuario = $user_id;
   
@@ -258,9 +259,18 @@ label {
                 <select name="txt_idlocal" required="required" class="form-control select2" style="width: 100%;">
                 <?php
                 $result2 = $ficha->getAllTiendaPasillo();
+                
                 foreach ($result2 as $key2 => $value2) {
+                  
+                  if ($result2[$key2]['id_local'] != ''){
+                    $idLocal= $result2[$key2]['id_local'];
+                  }
+                  else{
+                    $idLocal = 'ID_Local no definido';
+                  }
                 ?>
-                    <option value="<?php echo $result2[$key2]['id'] ?>" ><?php echo $result2[$key2]['tienda'] ?> | <?php echo $result2[$key2]['pasillo'] ?></option>
+                    <option value="<?php echo $result2[$key2]['id'] ?>" ><?php echo $result2[$key2]['tienda'] ?> | <?php echo $result2[$key2]['pasillo'] ?>  | <?php echo $idLocal; ?></option>
+                
                   <?php
                   
                 }

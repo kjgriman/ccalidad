@@ -155,7 +155,7 @@ input#reservation {
                 $result2 = $ficha->getAllTiendaPasillo();
                 foreach ($result2 as $key2 => $value2) {
                 ?>
-                    <option value="<?php echo $result2[$key2]['id'] ?>" ><?php echo $result2[$key2]['tienda'] ?> | <?php echo $result2[$key2]['pasillo'] ?></option>
+                    <option value="<?php echo $result2[$key2]['id'] ?>" ><?php echo $result2[$key2]['tienda'] ?> | <?php echo $result2[$key2]['pasillo'] ?>  | <?php echo $result2[$key2]['id_local'] ?></option>
                   <?php
                   
                 }

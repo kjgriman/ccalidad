@@ -31,7 +31,7 @@ class FICHA
     {
        try
        {
-          $stmt = $this->db->prepare("SELECT tienda, pasillo,id FROM tbl_tiendas ORDER BY tienda ASC");
+          $stmt = $this->db->prepare("SELECT tienda, pasillo,id ,id_local FROM tbl_tiendas ORDER BY tienda ASC");
           
           $stmt->execute();
           
