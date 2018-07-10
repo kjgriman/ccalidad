@@ -7,7 +7,23 @@ class FICHA
     {
       $this->db = $DB_con;
     }
- 
+    public function getAllDoc()
+    {
+       try
+       {
+          $stmt = $this->db->prepare("SELECT * FROM documents ORDER BY id_document DESC");
+          
+          $stmt->execute();
+          
+          $result = $stmt->fetchAll();
+
+          return $result;
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }
+   }
  
   
     public function getAllArea()
@@ -98,7 +114,26 @@ public function getAllItems($categoria)
            echo $e->getMessage();
        }
    }
+    public function registerDoc($nombreDoc,$ContentDoc,$autorDoc,$fechaDoc){
+     try{
+         $newname= $nombreDoc.'-'.$fechaDoc;
+        $stmt = $this->db->prepare("INSERT INTO  documents ( nombre_document, content_document, autor_document,fecha_document) 
+        VALUES(:nombre_document, :content_document, :autor_document,:fecha_document)");
+        
+        $stmt->bindparam(":nombre_document", $newname);
+        $stmt->bindparam(":content_document", $ContentDoc);
+        $stmt->bindparam(":autor_document", $autorDoc);
+        $stmt->bindparam(":fecha_document", $fechaDoc);            
+        $stmt->execute(); 
 
+        return $this->db->lastInsertId();
+
+     }  
+      catch(PDOException $e)
+     {
+         echo $e->getMessage();
+     } 
+    }
 
     public function registerFicha($idLocal,$fecha,$obs,$plazo,$idusuario)
     {

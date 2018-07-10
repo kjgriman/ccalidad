@@ -58,6 +58,7 @@
           <ul class="treeview-menu">
             <li><a href="data.php"><i class="fa fa-circle-o"></i> Historico de inspecciones</a></li>
             <li><a href="historico.php"><i class="fa fa-circle-o"></i> Historico por tienda</a></li>
+            <li><a href="document.php"><i class="fa fa-circle-o"></i> Documentos</a></li>
 
           </ul>
         </li>

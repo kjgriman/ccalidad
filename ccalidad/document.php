@@ -11,20 +11,26 @@ $msje="";
 
 if(isset($_POST['btn-aceptar']))
 {
-    $tienda = $_POST['tienda'];
-    $pasillo = $_POST['pasillo'];
-    $encargado = $_POST['encargado'];
-    $email_tienda = $_POST['email_tienda'];
   
-  if (!empty($tienda) && !empty($pasillo) && !empty($encargado) && !empty($email_tienda) ) {
+    $nombreDoc = $_POST['name-document'];
+    $ContentDoc = $_POST['textarea'];
+    $autorDoc = $user_id;
+    $fechaDoc = date('Y-m-d');
+    // print_r($nombreDoc);
+    // print_r( $ContentDoc);
+    // print_r( $autorDoc);
+    // print_r( $fechaDoc);
+  
+  if (!empty($nombreDoc) && !empty($ContentDoc) && !empty($autorDoc) && !empty($fechaDoc) ) {
     
-   if ($ficha->registertienda($tienda,$pasillo,$encargado,$email_tienda)) {
+   if ($ficha->registerDoc($nombreDoc,$ContentDoc,$autorDoc,$fechaDoc)) {
       # code...
       $msje="Registro guardado satisfactoriamente";
     } 
   //echo "Nro ".$nro;
-
-  }
+  
+}
+header( "Refresh:2; document.php", true, 303);
 }
 ?>
 
@@ -70,6 +76,10 @@ if(isset($_POST['btn-aceptar']))
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"hs></script>
   <![endif]-->
    <style>
+   .wysihtml5-sandbox{
+       width: 100% !important;
+       height: auto !important;
+   }
 .col-md-4 {
     border-right: 1px solid #ececec;
     height: 49px;
@@ -192,70 +202,38 @@ label {
 			<div class="row">
             <form role="form" method="post" enctype="multipart/form-data">
               <div class="box-body">
-                   <div class="col-md-6">
-                <div class="form-group">
-                
-                
-               
-               </div>
-               <div class="form-group">
-               	<label>Nombre de la Tienda</label>
-                <input type="text" class="form-control" name="tienda" required>
-                
-               
-               </div>
-                <div class="form-group">
-                	<label>Pasillo</label>
-                  <select name="pasillo" required="required" class="form-control select2" style="width: 50%;" required>
-                	
-                    <option value="Dinosaurio">Áreas Comunes</option>
-                    <option value="Dinosaurio">Cebra</option>
-                    <option value="Delfin">Delfin</option>
-                    <option value="Dinosaurio">Dinosaurio</option>
-                    <option value="Elefante">Elefante</option>
-                    <option value="Food Court">Food Court</option>
-                    <option value="Food Court Carrousel">Food Court Carrousel</option>
-                    <option value="Food Court Magic Zone">Food Court Magic Zone</option>
-                    <option value="Gorila">Gorila</option>
-                    <option value="Hipopotamo">Hipopotamo</option>
-                    <option value="Kanguro">Kanguro</option>
-                    <option value="Kioskos">Kioskos</option>
-                    <option value="Koala">Koala</option>
-                    <option value="Leon">Leon</option>
-                    <option value="Panda">Panda</option>
-                  	<option value="Pinguino">Pinguino</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                <label>Encargado/a de la tienda</label>
-                <input type="text" class="form-control" name="encargado" required>
-                
-               
-               </div>
-               <div class="form-group">
-                <label>Email tienda</label>
-                <input type="email" class="form-control" name="email_tienda" required>
-                
-               
-               </div>
-                
+              <div class="col-md-6">
+					<div class="form-group">
+                    <label for="name-document">Nombre del documento</label>
+						<input type="text" name="name-document" class="form-control" required="required">
+					  </div>
+				  </div> 
+                   <div class="col-md-12">
+                        <div class="form-group">
+                        <textarea id="summernote" name="textarea" class="textarea"></textarea>
+                        </div>
                    </div>
-                   
-                       
-           
-                
-					   
-                       
-                  <div class="col-md-12">
+                   <div class="col-md-12">
 					<div class="box-footer">
 						<button type="submit" name="btn-aceptar" class="btn btn-primary btn-block">Guardar</button>
 					  </div>
 				  </div> 
                   
+              </div>
+                   
+            </div>
+                  
               <!-- /.box-body -->
 
               
             </form>
+            <?php
+                $documets= $ficha->getAllDoc();
+            foreach($documets as $doc){
+
+                echo '<a class="btn btn-info" style="padding:5px; margin:5px;">'.$doc['nombre_document'].'<span style="margin-left: 5px;" class="glyphicon glyphicon-file"></span></a><br>';
+            }
+            ?>
           </div>
           <!-- /.box -->
 
@@ -316,8 +294,17 @@ label {
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src="dist/js/wysihtml5.min.js"></script>
+<!-- <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script> -->
+<!-- include summernote css/js -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
     <script>
+
   $(function () {
     //Initialize Select2 Elements
     $(".select2").select2();
@@ -396,6 +383,22 @@ label {
 
   // We can watch for our custom `fileselect` event like this
   $(document).ready( function() {
+    // $('textarea').wysihtml5();
+    $('#summernote').summernote({
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture', 'hr']],
+    ['view', ['fullscreen', 'codeview']],
+    ['help', ['help']]
+  ]
+});
       $(':file').on('fileselect', function(event, numFiles, label) {
 
           var input = $(this).parents('.input-group').find(':text'),
