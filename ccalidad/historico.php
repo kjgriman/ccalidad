@@ -155,17 +155,21 @@ input#reservation {
             <div class="box-body no-padding">
         
               <div class="table-responsive mailbox-messages">
-                <table class="table table-hover table-striped">
+                <table id="example1" class="table table-hover table-striped">
                   <tbody>
                     <?php
                     $result= $ficha->historicbylocal();
                     // print_r($result);
                     foreach ($result as $key => $value) {
-                      print_r($value);
+                      
                       ?>
                     <tr>
-                    <td class="mailbox-name"><a href="" onclick="showmodal()"><?php print_r($value['tienda']);?> | <?php print_r($value['pasillo']);?></a></td>
-                    <td class="mailbox-subject"><b>Reporte de todas las inspecciones</b>
+                    
+                    <td class="mailbox-name">
+                    <input type="hidden" id="id_tienda" name="id_tienda" value="<?php print_r($value['id_tienda']);?>">
+                    <a href=""><?php print_r($value['tienda']);?> | <?php print_r($value['pasillo']);?></a></td>
+                    <td class="mailbox-subject">
+                    <input id="editDoc" onClick="editdoc(<?php print_r($value['id_tienda']);?>)" type="button" value="Ver listado de inspecciones" class="btn btn-info" style="margin-left:5px;">
                     </td>
                     <td class="mailbox-attachment"></td>
                     </tr>
@@ -385,17 +389,56 @@ input#reservation {
 </div>
 
 <!--modal fotos-->
-   
-     <div class="modal fade" id="AddFotosDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
+<?php foreach($result as $value): ?>
+
+  <div class="modal fade" id="AddFotosDialog<?php echo $value['id_tienda']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="exampleModalLabel">Fotos Inspecci&oacute;n:</h4>
+        <h4 class="modal-title" id="exampleModalLabel">Listado de Inspecci&oacute;nes realizadas</h4>
       </div>
       <div class="modal-body">
           <div class="form-group">
-             <input type="hidden" name="nroFotoId" id="nroFotoId" class="form-control" >
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Fecha Inspeccion</th>
+                  <th>Usuario</th>
+                  <th>Observaciones Generales</th>
+                  <th>Plazo</th>
+                  <th>Imagenes</th>
+                </tr>
+              </thead>
+              <tbody>
+              <input type="hidden" id="id_actual_tienda">
+             <?php
+
+            $result1= $ficha->getFichaById($value['id_tienda']);
+           foreach($result1 as $res){
+            
+
+             ?>
+             
+                <tr>
+                  <td><?php print_r($res['fecha']);?></td>
+                  <td><?php print_r($res['fecha_inspeccion']);?></td>
+                  <td><?php print_r($res['user_name']);?></td>
+                  <td><?php print_r($res['observaciones']);?></td>
+                  <td><?php print_r($res['plazo']);?></td>
+                  <form action="reporte.php" method="post">
+                  <input type="hidden" name="idficha" value="<?php  print_r($res['id']);?>">
+                  <td><input type="submit" class="btn btn-success" value="Ver imagenes"></td>
+                  </form>
+                  
+                </tr>
+                
+              
+           
+           <?php } ?>
+           </tbody>
+            </table>
           </div>
           
       </div>
@@ -405,6 +448,7 @@ input#reservation {
     </div>
   </div>
 </div>
+<?php endforeach ?>
 
     </section>
     <!-- /.content -->
@@ -447,8 +491,23 @@ input#reservation {
 <script src="dist/js/demo.js"></script>
 <!-- page script -->
 <script>
+function editdoc(id){
+        
+  $('#AddFotosDialog'+id).modal('show');
+       $('#id_actual_tienda').val(id);
+      }
+
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable( {
+        "language": {
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "No se encontraron registros",
+            "info": "Showing page _PAGE_ of _PAGES_",
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "sSearch": "Buscar aqui:"
+
+        }
+    } );
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -491,6 +550,9 @@ input#reservation {
   });
   
   $(document).ready(function () {
+   
+
+
        $(".open-AddBookDialog").click(function () {
         $('#nroId').val($(this).data('id'));
         $('#fecha').val($(this).data('fecha'));

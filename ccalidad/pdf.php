@@ -12,7 +12,7 @@ Dompdf\Autoloader::register();
 use Dompdf\Dompdf;
 
 // instantiate and use the dompdf class
-$text="<h1>ggg</h1>";
+
 $dompdf = new Dompdf();
 $dompdf->loadHtml($contentDoc);
 

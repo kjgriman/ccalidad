@@ -277,8 +277,8 @@ input#reservation {
                         	           
                                       $resultado = $ficha->searchResultadosFicha($row[0]);
                         	            $resultado2 = $ficha->querycategory($row[0]);
-                                      echo "<pre>";
-                                      print_r($resultado);
+                                      // echo "<pre>";
+                                      // print_r($resultado);
                                      
                                       if($resultado != null){
 
@@ -298,7 +298,7 @@ input#reservation {
                                       ?>
                                        
                                       <tr>
-                                        <td><input type="text" name="data_<?php echo $nro;?>" id="data_<?php echo $nro;?>" value='<?php print_r ($resultadojson); ?>'> <input type="text" name="resultado2_<?php echo $nro;?>" id="resultado2_<?php echo $nro;?>" value='<?php print_r ($resultadojson2); ?>'><?php echo $nro; ?></td>
+                                        <td><input type="hidden" name="data_<?php echo $nro;?>" id="data_<?php echo $nro;?>" value='<?php print_r ($resultadojson); ?>'> <input type="hidden" name="resultado2_<?php echo $nro;?>" id="resultado2_<?php echo $nro;?>" value='<?php print_r ($resultadojson2); ?>'><?php echo $nro; ?></td>
                                         <td><?php echo $row['fecha_inspeccion'] ?></td>
                                         <td><?php echo $row['tienda'] ?></td>
                                         <td><?php echo $row['user_name'] ?></td>

@@ -160,15 +160,15 @@ public function getAllItems($categoria)
        {
           
            $stmt = $this->db->prepare("INSERT INTO  tbl_ficha ( id_tienda,fecha_inspeccion,plazo,observaciones,id_usuario) 
-                                                       VALUES(:idlocal, :fecha, :plazo,:obs,:idusuario)");
+                                                       VALUES(:idlocal, :fecha, :plazo,:obs,:idusuario )");
            $stmt->bindparam(":idlocal", $idLocal);
            $stmt->bindparam(":fecha", $fecha);
            $stmt->bindparam(":plazo", $plazo);
            $stmt->bindparam(":obs", $obs);
-           $stmt->bindparam(":idusuario", $idusuario);            
+           $stmt->bindparam(":idusuario", $idusuario);           
            $stmt->execute(); 
            
-           return $this->db->lastInsertId().'<br />';
+           return $this->db->lastInsertId();
           
        }
        catch(PDOException $e)
@@ -241,7 +241,36 @@ public function getAllItems($categoria)
            echo $e->getMessage();
        }    
     }
- 
+    public function getfotoByFicha($idficha){ 
+        $stmt = $this->db->prepare("SELECT * FROM tbl_fotos  WHERE id_ficha = ".$idficha." ");
+              
+              
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if ($result==0){
+          return'no se encontro algun registro que cumpla estos parametros';
+    
+        }
+        else{
+                         
+      return $result;
+        }
+     }
+ public function getFichaById($idtienda){ 
+    $stmt = $this->db->prepare("SELECT * FROM tbl_ficha LEFT JOIN tbl_users ON tbl_ficha.id_usuario = tbl_users.user_id WHERE id_tienda = ".$idtienda." ");
+          
+          
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    if ($result==0){
+      return'no se encontro algun registro que cumpla estos parametros';
+
+    }
+    else{
+                     
+  return $result;
+    }
+ }
     public function searchByLocal1($idLocal,$fecha1,$fecha2,$inspector)
     {
 
