@@ -13,15 +13,15 @@ class ARCHIVO
     {
        try
        {
-          
+          $fecha_registro = date('Y-m-d');
    
-           $stmt = $this->db->prepare("INSERT INTO tbl_fotos (url,id_ficha) 
-                                                       VALUES(:url, :idFicha)");
+           $stmt = $this->db->prepare("INSERT INTO tbl_fotos (url, id_ficha, fecha_registro) VALUES(:url, :idFicha, :fecha_registro)");
            $stmt->bindparam(":url", $url);
            $stmt->bindparam(":idFicha", $idFicha);       
+           $stmt->bindparam(":fecha_registro", $fecha_registro);       
            $stmt->execute(); 
    
-           return $stmt; 
+           return $this->db->lastInsertId();; 
        }
        catch(PDOException $e)
        {

@@ -29,60 +29,59 @@ if(isset($_POST['btn-aceptar']))
   //echo "Nro ".$mysqldate;
   
    $nro = $ficha->registerFicha($idLocal,$mysqldate,$obs,$plazo,$idusuario);
-  // echo "Nro ".$nro;
+   if ($nro != ''){
+// echo "Nro ".$nro;
    
-   $totalItem1 = intval($_POST['totalItem']);
-   $totalCategoria1 = intval($_POST['totalCategoria']);
-   
-   //Guardamos los item de la ficha
-   for($i=1;$i<=$totalItem1;$i++){
-    $valor = $_POST['item'.$i];
-		$categoria = $_POST['categoria_'.$i];
-		$resultado->addResultado($nro,$i,$categoria,$valor);
+$totalItem1 = intval($_POST['totalItem']);
+$totalCategoria1 = intval($_POST['totalCategoria']);
+
+//Guardamos los item de la ficha
+for($i=1;$i<=$totalItem1;$i++){
+ $valor = $_POST['item'.$i];
+ $categoria = $_POST['categoria_'.$i];
+$addREsultado= $resultado->addResultado($nro,$i,$categoria,$valor);
+ 
+}
+
+//Guardamos las observaciones de cada categoria
+
+
+for($j=1;$j<=$totalCategoria1;$j++){
+ $valor = $_POST['obsv'.$j];
+ $categoria = $_POST['categoria_'.$j];
+ $fichaobservacion->addFichaObservacion($nro,$categoria,$valor);
+}
+
+// Loop $_FILES to exeicute all files
+foreach ($_FILES['files']['name'] as $f => $name) {     
+   if ($_FILES['files']['error'][$f] == 4) {
+       continue; // Skip file if any error found
+   }	       
+   if ($_FILES['files']['error'][$f] == 0) {	           
+       if ($_FILES['files']['size'][$f] > $max_file_size) {
+           $message[] = "$name is too large!.";
+           continue; // Skip large files
+       }
+   elseif( ! in_array(pathinfo($name, PATHINFO_EXTENSION), $valid_formats) ){
+     $message[] = "$name is not a valid format";
+     continue; // Skip invalid file formats
+   }
+       else{ // No error found! Move uploaded files 
+           if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], $path.$name))
+           $count++; // Number of successfully uploaded file
+          $addFile= $archivo->addFile($name,$nro);
+         
+       }
+   }
+}
+$msje="Registro guardado satisfactoriamente";
+   }  
+   else {
+     $msje="Error";
    }
    
-   //Guardamos las observaciones de cada categoria
-  
-  
-   for($j=1;$j<=$totalCategoria1;$j++){
-		$valor = $_POST['obsv'.$j];
-    $categoria = $_POST['categoria_'.$j];
-    // var_dump($nro);
-    // var_dump($categoria);
-    // var_dump($valor);
-    /*var_dump($j);
-    var_dump($valor);*/
-		$fichaobservacion->addFichaObservacion($nro,$categoria,$valor);
-   }
    
-   
-   
-   // Loop $_FILES to exeicute all files
-	foreach ($_FILES['files']['name'] as $f => $name) {     
-	    if ($_FILES['files']['error'][$f] == 4) {
-	        continue; // Skip file if any error found
-	    }	       
-	    if ($_FILES['files']['error'][$f] == 0) {	           
-	        if ($_FILES['files']['size'][$f] > $max_file_size) {
-	            $message[] = "$name is too large!.";
-	            continue; // Skip large files
-	        }
-			elseif( ! in_array(pathinfo($name, PATHINFO_EXTENSION), $valid_formats) ){
-				$message[] = "$name is not a valid format";
-				continue; // Skip invalid file formats
-			}
-	        else{ // No error found! Move uploaded files 
-	            if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], $path.$name))
-	            $count++; // Number of successfully uploaded file
-	            $archivo->addFile($name,$nro);
-	        }
-	    }
-	}
-   
-   
-   
-   $msje="Registro guardado satisfactoriamente";
-  // header('Location: ficha.php');
+   header( "Refresh:2; ficha.php", true, 303);
 }
 ?>
 
