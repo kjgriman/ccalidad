@@ -114,9 +114,28 @@ public function getAllItems($categoria)
            echo $e->getMessage();
        }
    }
+   public function editDoc($nombre_document,$content_document,$id_document)
+   {
+    try{
+         
+        $stmt = $this->db->prepare("UPDATE documents SET nombre_document = :nombre_document, content_document = :content_document WHERE id_document = :id_document");
+        
+        $stmt->bindparam(":nombre_document", $nombre_document);
+        $stmt->bindparam(":content_document", $content_document);
+        $stmt->bindparam(":id_document", $id_document);            
+        $stmt->execute(); 
+
+        return $this->db->lastInsertId(); 
+
+     }  
+      catch(PDOException $e)
+     {
+         echo $e->getMessage();
+     } 
+   }
     public function registerDoc($nombreDoc,$ContentDoc,$autorDoc,$fechaDoc){
      try{
-         $newname= $nombreDoc.'-'.$fechaDoc;
+         $newname= $nombreDoc.'-'.time();
         $stmt = $this->db->prepare("INSERT INTO  documents ( nombre_document, content_document, autor_document,fecha_document) 
         VALUES(:nombre_document, :content_document, :autor_document,:fecha_document)");
         
