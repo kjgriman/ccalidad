@@ -245,7 +245,11 @@ label {
               
             </form>
             <div class="content">
-              
+            <div class="col-md-12">
+					<div class="form-group">
+                    <label><span class="glyphicon glyphicon-list"></span> Listado de documentos </label>
+						 </div>
+				  </div> 
             <?php
                 $documets= $ficha->getAllDoc();
             foreach($documets as $doc){
@@ -493,7 +497,6 @@ echo'<input id="editDoc" onClick="editdoc('.$doc['id_document'].')" type="button
   $(document).ready( function() {
     // $('textarea').wysihtml5();
     $('#summernote').summernote({
-      placeholder: 'Aquì podra redactar su documento',
   toolbar: [
     // [groupName, [list of button]]
     ['style', ['bold', 'italic', 'underline', 'clear']],
