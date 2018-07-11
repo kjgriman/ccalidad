@@ -32,6 +32,22 @@ if(isset($_POST['btn-aceptar']))
 }
 header( "Refresh:2; document.php", true, 303);
 }
+if(isset($_POST['btn-editar']))
+{
+  $nombreDoc2 = $_POST['name-document2'];
+  $iddoc2 = $_POST['id_doc_edit'];
+    $ContentDoc2 = $_POST['textarea2'];
+    if (!empty($nombreDoc2) && !empty($ContentDoc2) && !empty($iddoc2)) {
+    
+   if ($ficha->editDoc($nombreDoc2,$ContentDoc2,$iddoc2)) {
+      # code...
+      $msje="Registro guardado satisfactoriamente";
+    } 
+  //echo "Nro ".$nro;
+  
+}
+header( "Refresh:2; document.php", true, 303);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -195,17 +211,18 @@ label {
 </div>
             <?php    }
                 ?>
-              <h3 class="box-title">Registro de tienda</h3>
+              <h3 class="box-title">Registro de documentos</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
 			<div class="row">
             <form role="form" method="post" enctype="multipart/form-data">
+              
               <div class="box-body">
               <div class="col-md-6">
 					<div class="form-group">
                     <label for="name-document">Nombre del documento</label>
-						<input type="text" name="name-document" class="form-control" required="required">
+						<input type="text" placeholder="Ingrese el nombre del documento" name="name-document" class="form-control" required="required">
 					  </div>
 				  </div> 
                    <div class="col-md-12">
@@ -215,7 +232,7 @@ label {
                    </div>
                    <div class="col-md-12">
 					<div class="box-footer">
-						<button type="submit" name="btn-aceptar" class="btn btn-primary btn-block">Guardar</button>
+						<button type="submit" name="btn-aceptar" class="btn btn-primary btn-block">Crear y Guardar</button>
 					  </div>
 				  </div> 
                   
@@ -227,13 +244,26 @@ label {
 
               
             </form>
+            <div class="content">
+              
             <?php
                 $documets= $ficha->getAllDoc();
             foreach($documets as $doc){
 
-                echo '<a class="btn btn-info" style="padding:5px; margin:5px;">'.$doc['nombre_document'].'<span style="margin-left: 5px;" class="glyphicon glyphicon-file"></span></a><br>';
+
+echo '<form action="pdf.php" method="post">';
+echo '<input type="hidden" name="nombreDoc" id="nombre'.$doc['id_document'].'" value="'.$doc['nombre_document'].'">';
+echo '<input type="hidden" name="idDoc" value="'.$doc['id_document'].'">';
+echo "<input type='hidden' name='contentDoc' id='content".$doc['id_document']."' value='".$doc['content_document']."'>";
+echo '<span class="btn btn-info" style="width:300px; text-align:left">'.$doc['nombre_document'].'</span>';
+
+echo'<input type="submit" value="Descargar PDF" class="btn btn-success" style="margin-left:5px;">';
+echo'<input id="editDoc" onClick="editdoc('.$doc['id_document'].')" type="button" value="Editar PDF" class="btn btn-warning" style="margin-left:5px;">';
+                echo '</form>';
+                
             }
             ?>
+            </div>
           </div>
           <!-- /.box -->
 
@@ -251,6 +281,54 @@ label {
     </section>
     <!-- /.content -->
   </div>
+<!-- Modal -->
+<div id="editor" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+         <form role="form" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id_doc_edit" id="id_doc_edit">
+              <div class="box-body">
+              <div class="col-md-6">
+          <div class="form-group">
+                    <label for="name-document">Nombre del documento</label>
+            <input type="text" id="name-document2" placeholder="Ingrese el nombre del documento" name="name-document2" class="form-control" required="required">
+            </div>
+          </div> 
+                   <div class="col-md-12">
+                        <div class="form-group">
+                        <textarea id="summernote2" name="textarea2"  class="textarea"></textarea>
+                        </div>
+                   </div>
+                   <div class="col-md-12">
+          <div class="box-footer">
+            <button type="submit" name="btn-editar" class="btn btn-primary btn-block">Guardar</button>
+            </div>
+          </div> 
+                  
+              </div>
+                   
+            </div>
+                  
+              <!-- /.box-body -->
+
+              
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.o
@@ -304,6 +382,33 @@ label {
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
     <script>
+      function editdoc(id){
+         $('#summernote2').summernote({
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture', 'hr']],
+    ['view', ['fullscreen', 'codeview']],
+    ['help', ['help']]
+  ]
+});
+        $('#editor').modal('show');
+        var nombre= $('#nombre'+id).val();
+       var content= $('#content'+id).val();
+       $('#name-document2').val(nombre);
+       $('#id_doc_edit').val(id);
+       $('.note-editable').html('');
+       $('.note-editable').append(content);
+       $('#summernote2').val(content);
+
+       
+      }
 
   $(function () {
     //Initialize Select2 Elements
@@ -382,9 +487,13 @@ label {
   });
 
   // We can watch for our custom `fileselect` event like this
+    /*$('#editDoc').on('click', function(){
+        $('#editor').modal('show')
+    })*/
   $(document).ready( function() {
     // $('textarea').wysihtml5();
     $('#summernote').summernote({
+      placeholder: 'Aquì podra redactar su documento',
   toolbar: [
     // [groupName, [list of button]]
     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -399,6 +508,7 @@ label {
     ['help', ['help']]
   ]
 });
+
       $(':file').on('fileselect', function(event, numFiles, label) {
 
           var input = $(this).parents('.input-group').find(':text'),
