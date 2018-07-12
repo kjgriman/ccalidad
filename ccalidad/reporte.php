@@ -118,76 +118,9 @@ input#reservation {
       </div>
     </nav>
   </header>
-  <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p>Bienvenido, <?php print($userRow['user_name']); ?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Enlinea</a>
-        </div>
-      </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li class="header">MENU PRINCIPAL</li>
-        <li class="treeview">
-          <a href="dashboard.php">
-            <i class="fa fa-dashboard"></i> <span>Escritorio</span>
-            <span class="pull-right-container">
-            </span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Registro</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-              <li><a href="ficha.php"><i class="fa fa-circle-o"></i> Ficha</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Tienda</a></li>
-             <li><a href="#"><i class="fa fa-circle-o"></i> Focos</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Usuario</a></li>
-          </ul>
-        </li>
-        <li class="active treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>Consultas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="data.php"><i class="fa fa-circle-o"></i> Consulta de inspecciones</a></li>
-            <li><a href="historico.php"><i class="fa fa-circle-o"></i> Historico por local</a></li>
-          </ul>
-        </li>
-      
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+      <!-- Left side column. contains the logo and sidebar -->
+      <?php require_once('aside.php'); ?>
 
-  <!-- Content Wrapper. Contains page content -->
-  <!-- Content Wrapper. Contains page content -->
- 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -206,7 +139,9 @@ input#reservation {
     <?php
     if(isset($_POST['idficha'])){   
       $result = $ficha->getfotoByFicha($_POST['idficha']);
-     
+     if ($result == NULL){
+       echo '<h3 class="alert alert-danger">Esta inspección no tiene imaganes asociadas</h3>';
+     }
     ?>
       <div class="row">
     
@@ -223,6 +158,8 @@ input#reservation {
               <ul class="mailbox-attachments clearfix">
               <?php
               foreach($result as $res){
+                $sizeKb = $res['size'] / 1024;
+                $parsize = number_format($sizeKb,2);
 
               
               ?>
@@ -230,9 +167,9 @@ input#reservation {
                   <span class="mailbox-attachment-icon has-img"><img src="uploads/<?php echo $res['url']?>" alt="Attachment"></span>
 
                   <div class="mailbox-attachment-info">
-                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo1.png</a>
+                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-calendar"></i> <?php echo $res['fecha_registro']?></a>
                         <span class="mailbox-attachment-size">
-                          2.67 MB
+                          <?php print_r($parsize);?> Kb.
                           <a href="uploads/<?php echo $res['url']?>" class="btn btn-default btn-xs pull-right" download><i class="fa fa-cloud-download"></i></a>
                         </span>
                   </div>

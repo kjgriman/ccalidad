@@ -46,36 +46,84 @@ $addREsultado= $resultado->addResultado($nro,$i,$categoria,$valor);
 //Guardamos las observaciones de cada categoria
 
 
-for($j=1;$j<=$totalCategoria1;$j++){
- $valor = $_POST['obsv'.$j];
- $categoria = $_POST['categoria_'.$j];
- $fichaobservacion->addFichaObservacion($nro,$categoria,$valor);
-}
+  for($j=1;$j<=$totalCategoria1;$j++){
+  $valor = $_POST['obsv'.$j];
+  $categoria = $_POST['categoria_'.$j];
+  $fichaobservacion->addFichaObservacion($nro,$categoria,$valor);
+  }
 
 // Loop $_FILES to exeicute all files
-foreach ($_FILES['files']['name'] as $f => $name) {     
-   if ($_FILES['files']['error'][$f] == 4) {
-       continue; // Skip file if any error found
-   }	       
-   if ($_FILES['files']['error'][$f] == 0) {	           
-       if ($_FILES['files']['size'][$f] > $max_file_size) {
-           $message[] = "$name is too large!.";
-           continue; // Skip large files
-       }
-   elseif( ! in_array(pathinfo($name, PATHINFO_EXTENSION), $valid_formats) ){
-     $message[] = "$name is not a valid format";
-     continue; // Skip invalid file formats
-   }
-       else{ // No error found! Move uploaded files 
-           if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], $path.$name))
-           $count++; // Number of successfully uploaded file
-          $addFile= $archivo->addFile($name,$nro);
+//foreach ($_FILES['files']['name'] as $f => $name) {  
+  //print_r($_FILES['files']);   
+  //  if ($_FILES['files']['error'][$f] == 4) {
+  //      continue; // Skip file if any error found
+  //  }	       
+  //  if ($_FILES['files']['error'][$f] == 0) {	           
+  //      if ($_FILES['files']['size'][$f] > $max_file_size) {
+  //          $message[] = "$name is too large!.";
+  //          continue; // Skip large files
+  //      }
+  //  elseif( ! in_array(pathinfo($name, PATHINFO_EXTENSION), $valid_formats) ){
+  //    $message[] = "$name is not a valid format";
+  //    continue; // Skip invalid file formats
+  //  }
+  //      else{ // No error found! Move uploaded files 
+  //          if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], $path.$name))
+  //          $count++; // Number of successfully uploaded file
+  //         $addFile= $archivo->addFile($name,$nro);
          
+  //      }
+   //}
+
+   if (isset($_FILES["files"]))
+   {
+      $reporte = null;
+        for($x=0; $x<count($_FILES["files"]["name"]); $x++)
+       {
+         $file = $_FILES["files"];
+         $nombre = $file["name"][$x];
+         $tipo = $file["type"][$x];
+         $ruta_provisional = $file["tmp_name"][$x];
+         $size = $file["size"][$x];
+         $dimensiones = getimagesize($ruta_provisional);
+         $width = $dimensiones[0];
+         $height = $dimensiones[1];
+         $carpeta = "uploads/";
+   
+         if ($tipo != 'image/jpeg' && $tipo != 'image/jpg' && $tipo != 'image/png' && $tipo != 'image/gif')
+         {
+             $reporte .= "<p style='color: red'>Error $nombre, el archivo no es una imagen.</p>";
+         }
+         else if($size > 1024*1024)
+         {
+             $reporte .= "<p style='color: red'>Error $nombre, el tamaño máximo permitido es 1mb</p>";
+         } 
+         else
+         {
+             $src = $carpeta.$nombre;
+   
+             //Caragamos imagenes al servidor
+            if( move_uploaded_file($ruta_provisional, $src)){
+              $addFile= $archivo->addFile($nombre,$nro,$size);
+
+             // echo "<p style='color: blue'>La imagen $nombre ha sido subida con éxito</p>";
+            }       
+   
+             //Codigo para insertar imagenes a tu Base de datos.
+             //Sentencia SQL
+   
+         }
        }
+   
    }
+
+
+
+
+   $msje="Registro guardado satisfactoriamente";
+
 }
-$msje="Registro guardado satisfactoriamente";
-   }  
+    
    else {
      $msje="Error";
    }
